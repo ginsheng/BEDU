@@ -9,7 +9,7 @@ tiene probabilidad p de resultar en éxito.
 
 Pensemos en el caso simple de lanzar una moneda justa al aire:"
 
-#
+sample(c("Águila", "Sol"), size = 1, prob = c(0.5, 0.5))
 
 "Si repetimos el experimento de Bernoulli un número considerado de veces y registramos 
 las veces que el experimento resultó en éxito como 1 y en fracaso como 0, podemos 
@@ -19,10 +19,10 @@ Entre más grande sea el número de experimentos que realizamos, más nos acerca
 a la distribución real de la variable aleatoria"
 
 n <- 1000
-p <- 0.5
-count = c()
+p <- 0.7
+count <- c()
 for (i in seq(n)) {
-  x <- sample(c("Águila", "Sol"), size = 1, prob = c(0.5, 1-p))
+  x <- sample(c("Águila", "Sol"), size = 1, prob = c(p, 1-p))
   if (x == "Águila") {
     count[i] = 1
   }
@@ -41,8 +41,8 @@ barplot(table(count)/length(count),
     - SD[X] = sqrt(p*(1-p))
 Esto podemos comprobarlo con las funciones descriptivas que hemos visto:"
 
-#
-#
+mean(count)
+sd(count)
 
 "Si nos decidimos a repetir n veces un experimento de Bernoulli y definimos la 
 variable aleatoria X como el número de éxitos en n experimentos de Bernoulli, 
@@ -52,13 +52,18 @@ Por ejemplo: Un cliente tiene una probabilidad de 0.3 de realizar una compra en
 nuestra tienda. Si al día tenemos 10 clientes, ¿cuál es la probabilidad de que 
 exactamente 0, 2, 4 y 10 de ellos realizan una compra?"
 
-#
+dbinom(x = 0, size = 10, prob = 0.3)
+dbinom(x = 2, size = 10, prob = 0.3)
+dbinom(x = 4, size = 10, prob = 0.3)
+dbinom(x = 6, size = 10, prob = 0.3)
+dbinom(x = 8, size = 10, prob = 0.3)
+dbinom(x = 10, size = 10, prob = 0.3)
 
 "Como podemos observar, la probabilidad va incrementando y posteriormente disminuye. 
 Esto nos da una idea de la cómo se comporta la distribución del número de clientes 
 que realizan una compra por día. Veamos ahora la distribución real de X:"
 
-binom <- #
+binom <- rbinom(n = 10000, size = 10, prob = 0.3)
 
 barplot(table(binom)/length(binom),
         main = "Distribución Binomial", 
@@ -67,21 +72,23 @@ barplot(table(binom)/length(binom),
 "¿Cuál es la probabilidad de que menos de 4 clientes realicen una compra? Para ello 
 podríamos sumar todas las probabilidades desde x = 0 hasta x = 4, pero existe otra forma 
 más fácil con la función de distribución acumulada:"
-dbinom(x = 0, size = 10, prob = 0.3) +
+  dbinom(x = 0, size = 10, prob = 0.3) +
   dbinom(x = 1, size = 10, prob = 0.3) +
   dbinom(x = 2, size = 10, prob = 0.3) +
   dbinom(x = 3, size = 10, prob = 0.3)
 
-#
+pinom <- pbinom(q = 3, size = 10, prob = 0.3, lower.tail = TRUE) # P( X <= x)
 
 "¿Cuál es la probabilidad de que más de 5 clientes realicen una compra?"
-dbinom(x = 6, size = 10, prob = 0.3) +
+  dbinom(x = 6, size = 10, prob = 0.3) +
   dbinom(x = 7, size = 10, prob = 0.3) +
   dbinom(x = 8, size = 10, prob = 0.3) +
   dbinom(x = 9, size = 10, prob = 0.3) +
   dbinom(x = 10, size = 10, prob = 0.3)
 
-#
+  pbinom(q = 5, size = 10, prob = 0.3, lower.tail = FALSE)# P( X > x)
+  
+  1 - pbinom(q = 5, size = 10, prob = 0.3, lower.tail = TRUE) 
 
 "Para una distribución binomial tenemos que:
     - E[X] = size*p
@@ -154,9 +161,10 @@ curve(dnorm(x, mean = binom.mean, sd = binom.sd), from=0, to=10,
 
 "Ahora vamos a demostrar que la aproximación es buena, calculando el promedio y la 
 desviación estándar"
-normal.binom <- #
+normal.binom <- rnorm(n = 10000, mean = binom.mean, sd = binom.sd)
 
-#
+mean(normal.binom)
+sd(normal.binom)
 #
 
 ### Distribución normal
@@ -176,8 +184,8 @@ plot(x, y, type = "l", xlab = "X", ylab = "f(x)",
 
 integrate(dnorm, lower = x[1], upper = x[length(x)], mean=mean, sd = sd)
 
-"Calcula P(X <= 180):"
-#
+"Calcula P(X <= 180) = P (X < 180): "
+pnorm(q = 180, mean = mean, sd = sd, lower.tail = TRUE)
 
 par(mfrow = c(2, 2))
 plot(x, y, type = "l", xlab = "", ylab = "")
@@ -186,7 +194,7 @@ title(main = "Densidad de Probabilidad Normal", sub = expression(paste(mu == 175
 polygon(c(min(x), x[x<=180], 180), c(0, y[x<=180], 0), col="red")
 
 "Calcula P(X <= 165):"
-#
+pnorm(q = 165, mean = mean, sd = sd)
 
 plot(x, y, type = "l", xlab = "", ylab = "")
 title(main = "Densidad de Probabilidad Normal", sub = expression(paste(mu == 175, " y ", sigma == 6)))
@@ -194,7 +202,7 @@ title(main = "Densidad de Probabilidad Normal", sub = expression(paste(mu == 175
 polygon(c(min(x), x[x<=165], 165), c(0, y[x<=165], 0), col="yellow")
 
 "Calcula P(165 <= X <= 180):"
-#
+pnorm(q = 180, mean = mean, sd = sd, lower.tail = TRUE) - pnorm(q = 165, mean = mean, sd = sd)
 
 plot(x, y, type = "l", xlab="", ylab="")
 title(main = "Densidad de Probabilidad Normal", sub = expression(paste(mu == 175, " y ", sigma == 6)))
@@ -202,7 +210,7 @@ title(main = "Densidad de Probabilidad Normal", sub = expression(paste(mu == 175
 polygon(c(165, x[x>=165 & x<=180], 180), c(0, y[x>=165 & x<=180], 0), col="green")
 
 "Calcula P(X >= 182):"
-#
+pnorm(q = 182, mean = mean, sd = sd, lower.tail = FALSE)
 
 plot(x, y, type = "l", xlab="", ylab="", xlim = c(150, 200))
 title(main = "Densidad de Probabilidad Normal", sub = expression(paste(mu == 175, " y ", sigma == 6)))
@@ -213,11 +221,12 @@ dev.off()
 
 "Como con cualquier otra distribución, también podemos calcular los cuantiles de la 
 distribución, es decir podemos encontrar el valor b, tal que P(X <= b) = 0.75:"
-b <- #
+b <- qnorm(p = 0.75, mean = mean, sd = sd)
 b
 
 "Podemos combrar el resultaso anterior calculando P(X <= 179.0469):"
-#
+
+pnorm(q = 179.0469, mean = mean, sd = sd)
 
 ### Distribución normal estándar y valores Z
 "La distribución normal estándar es un caso especial de la distribución normal 
@@ -232,8 +241,8 @@ Por ejemplo: Sea X ~ N(120, 85). Calcula la probabilidad de que X sea menor a 10
 pnorm(q = 100, mean = 120, sd = 85)
 
 "Estandarizando tenemos que Z ~ N(0,1), y el valor estandarizado de 100 es"
-z <- #
+z <- (100 - 120) / 85
 z
 
 "Por lo tanto, la probabilidad de que Z sea menor a -0.2352941 es"
-#
+pnorm(z, mean = 0, sd = 1)
