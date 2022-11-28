@@ -1,3 +1,13 @@
+"Teorema central del límite (creo que es una traducción literal de
+'Teorema de límite central')"
+
+"Data una muestra aleatoria Y₁. Y₂, ..., Yₙ de cualquier población con media μ
+y varianza σ² finita, se cumple que la media muestral (promedio) Ȳ está
+distribuida normalmente de forma aproximada con media μ y varianza σ²/n, siempre
+y cuando el tamao muestral sea grande (n > 30)."
+
+"Por ejempo, si tomamos una muestra aleatoria de tamaño n = 33 "
+
 muestra <- c(1.82165160, 1.06824486, 0.38492498, 0.52779737, 0.17989299, 
              0.38599556, 0.01565589, 0.53166559, 1.08000160, 0.61289266, 
              0.16050136, 0.35143952, 0.41076615, 1.09468497, 0.53319069, 
@@ -6,10 +16,11 @@ muestra <- c(1.82165160, 1.06824486, 0.38492498, 0.52779737, 0.17989299,
              0.35948934, 0.20484999, 0.13779880, 0.28064973, 2.03910927, 
              0.19785169, 0.46706578, 0.30224129)
 
+"que proviene de una población que está sesgada hacia la derecha, lo cuál puede
+verse al considerar su histograma:"
+
 data <- as.data.frame(muestra)
-
 library(ggplot2)
-
 ggplot(data, aes(muestra)) +
   geom_histogram(colour = 'red', fill = 'pink',
                  alpha = 0.7, bins = 7) + # Intensidad del color fill
@@ -18,8 +29,19 @@ ggplot(data, aes(muestra)) +
   theme_get() +
   theme(plot.title = element_text(hjust = 0.5, size = 16))
 
+"resulta que el promedio de los b=33 valores:"
+
 mean(muestra)
 
+"Es un valor que sí proviene de una poblaciOn aproximadamente normal. Es decir,
+si tomáramos 1000 muestras aleatoria diferentes como al anterior (donde cada
+muestra proviene de la misma población que está sesgada hacia la derecha y por
+lo tanto cada uno de los histogramas de las muestras serían similares al
+histograma anterior), y obtuviéramos los 1000 promedios correspondientes a cada
+una de las muestras de tamaño 33, entones el histograma de estos 1000 promedios
+(¿no sería de los 1000/33 promedios? N. del alumno), tendría aproximadamente
+forma de campana (sería simétrico)."
+###############################################################################
 "Contraste de hipótesis"
 
 "Se comete un error de tipo I si H₀ es rechazada cuando H₀
@@ -29,7 +51,7 @@ por α. El valor de α se denomina nivel de la prueba
 Se comete un error de tipo II si H₀ es acetada cuando Hₐ es
 verdadera. La probabilidad de un error tipo II está denotada
 por β"
-###############################################################################
+
 "Ejemplo. Contraste de cola superior"
 
 "Estamos interesados en contrastar las hipótesis H₀: μ = 0.1 vs H₁: μ > 0.1
