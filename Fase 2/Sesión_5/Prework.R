@@ -215,16 +215,16 @@ hipótesis:"
 "                   H₀: μ = 7 vs H₁: μ ≠ 7                               "
 
 "tenemos lo siguiente:
-n = 10, y = 7.1, s = 0.12, gl = 10 - 1 = 9
+n = 10, Ȳ = 7.1, s = 0.12, gl = 10 - 1 = 9
 "
 mu <- 7
 n <- 10
-y <- 7.1
+y.macron <- 7.1
 sd <- 0.12
 gl <- n - 1
 alph.a <- 0.10
 
-t0 <- (y - mu) / (sd/sqrt(n))
+t0 <- (y.macron - mu) / (sd/sqrt(n))
 
 "y para alfa:"
 
