@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-"A continuación, vamos a ajustar un modelo de regresión lineal simple a un
-=======
 "A cotinuación, vamos a ajustar un modelo de regresión lineal simple a un
->>>>>>> f5d347671efa1bbfe1d4a67e07676875a5a35445
 conjunto de datos en R. Suponga que el conjunto de datos proviene de una fábrica
 que elabora productos."
 
