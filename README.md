@@ -1,5 +1,4 @@
-# BEDU
-Ejercicios del curso de DataSience
+# BEDU - Ejercicios del curso de DataSience
 
 Dejo aquí los ejercicios que he realizado, para cualquiera que esté interesado.
 
