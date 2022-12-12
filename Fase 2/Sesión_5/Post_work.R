@@ -9,8 +9,6 @@ data(iris)
 
 ds <- iris
 
-complete.cases(ds)
-
 ds.flowers <- ds [complete.cases(ds), ]
 
 ds.flowers$Species <- factor(ds.flowers$Species)
@@ -26,8 +24,8 @@ ds.virginica <- filter(ds.flowers, ds.flowers$Species == 'virginica')
 "I. En promedio, el largo del sépalo de la especie setosa (Sepal.Length) es
 igual a 5.7 cm"
 
-# Ho: Sepal.Length (de la especie setosa) == 5.7 esta es la hipótesis propuesta
-# Ha: Sepal Length (de la especie setosa) != 5.7
+# Ho: Sepal.Length (de la especie setosa) == 5.7 * esta es la hipótesis propuesta
+# Ha: Sepal.Length (de la especie setosa) != 5.7
 ?t.test
 
 # Realizando prueba t.student...
@@ -122,15 +120,15 @@ versicolor por 1.1 cms"
 "IV. En promedio, no existe diferencia en el ancho del sépalo entre las 3
 especies."
 
-# Ho: Petal.Width(setosa) - Petal.Width(virginica) - Petal.Width(versicolor) = 0
+# Ho: Sepal.Width(setosa) - Sepal.Width(virginica) - Sepal.Width(versicolor) = 0
 # Ho es la hipótesis propuesta
-# Ha: Petal.Width(setosa) - Petal.Width(virginica) - Petal.Width(versicolor)‹›0
+# Ha: Sepal.Width(setosa) - Sepal.Width(virginica) - Sepal.Width(versicolor)‹›0
 
 # Probando...
 t.test(x = 
-         (ds.setosa$Petal.Width -
-         ds.virginica$Petal.Width -
-         ds.versicolor$Petal.Width),
+         (ds.setosa$Sepal.Width -
+         ds.virginica$Sepal.Width -
+         ds.versicolor$Sepal.Width),
        alternative = 'two.sided',
        mu = 0
        )
@@ -147,7 +145,7 @@ sample estimates:
 mean of x 
    -3.106"
 
-"Conclusión: Con un nivel de confianza de 99%, existe evidencia estadñistica
+"Conclusión: Con un nivel de confianza de 99%, existe evidencia estadística
 para rechazar la hipótesis nula, en favor de la alternativa: El ancho de los
 pétalos entre las tres especies es distinto"
 

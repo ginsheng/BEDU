@@ -54,7 +54,7 @@ a 1.85 usd?"
 ?pnorm
 pnorm(1.85, media, sd, lower.tail = TRUE)
 
-#lower.tail (por dafecto: VERDADERO) indica si la P resulta caer en X <= x
+#lower.tail (por defecto: VERDADERO) indica si la P resulta caer en X <= x
 #si es falso, consdiera lo opuesto (X > x)
   
 "3. ¿Cuál es la probabilidad de que el total de cargos internacionales sea mayor
@@ -66,7 +66,7 @@ pnorm(3, media, sd, lower.tail = FALSE)
 entre 2.35usd y 4.85 usd?"
 
 pnorm(4.85, media, sd, lower.tail = TRUE) - 
-  pnorm(2.3, media, sd, lower.tail = TRUE)
+  pnorm(2.35, media, sd, lower.tail = TRUE)
   
 "5. Con una probabilidad de 0.48, ¿cuál es el total de cargos internacionales
 más alto que podría esperar?"

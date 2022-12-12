@@ -1,17 +1,5 @@
 # Postwork Sesión 3
 
-#### Objetivo
-
-#- Realizar un análisis descriptivo de las variables de un dataframe
-
-#### Requisitos
-
-#1. R, RStudio
-#2. Haber realizado el prework y seguir el curso de los ejemplos de la sesión
-#3. Curiosidad por investigar nuevos tópicos y funciones de R
-
-#### Desarrollo
-
 "Utilizando el dataframe `boxp.csv` realiza el siguiente análisis descriptivo.
 No olvides excluir los missing values y transformar las variables a su
 tipo y escala correspondiente."
@@ -29,14 +17,13 @@ summary(df)
 #1) Calcula e interpreta las medidas de tendencia central de la variable
 #`Mediciones`
 
-mean(x=df$Mediciones) #62.8849 Las mediciones en promedio son de 62.88
-mean(x=df$Mediciones, trim = 0.25) "... aunque si truncamos el 50% de valores, 
-el primedio se separa hasta 50.05556. Un diferencia que quizá sugiera un sesgo a
-causa de valores demasiado disparados (atípicos)"
-median(x=df$Mediciones) "49.3 La mitad de las mediciones son de 49.3 o más lo
-que nos dice que el punto central está en 49.3 (el promedio está por arriba de
-esto)"
-Mode(x=df$Mediciones) # Le medición con mayor número de repeticiones (6) es 23.3
+mean(x=df$Mediciones)
+
+mean(x=df$Mediciones, trim = 0.25)
+
+median(x=df$Mediciones) 
+
+Mode(x=df$Mediciones) 
 
 #2) Con base en tu resultado anterior, ¿qué se puede concluir respecto al sesgo
 #de `Mediciones`?
@@ -66,6 +53,7 @@ IQR(df$Mediciones)
 iqr = quantile(df$Mediciones, probs = 0.75) - quantile(df$Mediciones,
                                                        probs = 0.25)
 
+iqr
 cuartiles <- quantile(df$Mediciones, probs = c(0.25, 0.50, 0.75))
 
 cuartiles

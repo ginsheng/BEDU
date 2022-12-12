@@ -26,6 +26,11 @@ str(df)
 
 df$East <- factor(df$East, labels = c("No", "Yes"))
 
+# Requisitos para el modelo de regresión lineal.
+" La variable dependiente (Y) debe ser una variable continua (idealmente)
+  Tiene que existir relación entre las variables dependiente (Y) y la(s)
+  descriptiva(s), las X's"
+
 df.select <- select(df, Price, Food, Decor, Service)
 round(cor(df.select),4)  
 
@@ -101,7 +106,7 @@ plot(Food, StanRes2, ylab = "Residuales Estandarizados")
 plot(Decor, StanRes2, ylab = "Residuales Estandarizados")
 plot(East, StanRes2, ylab = "Residuales Estandarizados")
 
-qqnorm(StanRes2)
+ qqnorm(StanRes2)
 qqline(StanRes2)
 
 dev.off()
