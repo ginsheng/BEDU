@@ -26,8 +26,8 @@ library(RMySQL)
 "Para realizar una conexión, necesitamos un engine que nos ayude a establecer el nombre 
 del servidor (servidio de DBMS), el nombre de la base de datos, host y, en su caso,
 usuario y contraseña:"
-db.conn <- ##(
-  drv = ##,
+db.conn <- dbConnect(
+  drv = RMySQL::MySQL(),
   dbname = "shinydemo",
   host = "shiny-demo.csa7qlmguqrf.us-east-1.rds.amazonaws.com",
   username = "guest",
@@ -35,12 +35,21 @@ db.conn <- ##(
 
 "Con la siguientes todas las tablas de datos que tenemos disponibles en nuestro database 
 y enlistar el nombre de los campos en cada una de ellas:"
-##
+dbListTables(db.conn)
 
-##
+dbListFields(db.conn, "City")
+dbListFields(db.conn, "Country")
 
 "La función dbGetQuery() nos permite realizar una consulta y extraer los datos obtenidos."
-db.data <- ##
+db.data <- dbGetQuery(
+  db.conn, "SELECT
+  a.Name AS City,
+  a.Population AS CityPopulation,
+  b.Name AS Coutry,
+  b.Population AS CountryPopulation
+  FROM City as a INNER JOIN Country as b ON a.CountryCode = b.Code
+  ORDER BY CityPopulation DESC"
+)
 
 "Los datos son almacenados en un dataframe, por lo que podemos user otras funciones 
 para manipularlos, procesarlos y transformarlos."
@@ -51,10 +60,11 @@ head(db.data)
 o para dar o revocar permisos, las cuales no regresan datos que podemos almacenar en un 
 dataframe. (DCL). Como la conexión que estamos realizando es una databse pública, nos podemos 
 implementar DDL o DCL, pero podemos ejemplificarlo de la siguiente forma:"
-rs <- ##
+rs <- dbSendQuery(db.conn,
+                  "SELECT 'saludos desde R en la nube' AS saludo;")
 
-##
-##
+dbFetch(rs)
+dbClearResult(rs)
 
 "Una vez terminadas nuestras consultas, debemos cerrar nuestra conexión:"
 dbDisconnect(db.conn)
@@ -76,7 +86,7 @@ library(rjson)
 
 "La función fromJSON() permite leer archivos JSON locales o en una url:"
 URL <- "https://tools.learningcontainer.com/sample-json-file.json"
-JsonData <- ##
+JsonData <- fromJSON(file = URL)
 
 class(JsonData)
 

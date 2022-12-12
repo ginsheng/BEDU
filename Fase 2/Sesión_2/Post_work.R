@@ -17,14 +17,20 @@ Sepal.Width en el eje vertical, que identifique Species por color y que el
 tamaño de la figura está representado por Petal.Width. Asegúrate de que la
 geometría contenga shape = 10 y alpha = 0.5"
 
+install.packages("ggplot2")
 library(ggplot2)
 
-graph<-ggplot(ds.clean, aes(x=Sepal.Length, y = Sepal.Width, color=Species, size = Petal.Width)) +
+graph<-ggplot(
+  ds.clean, aes(
+    x=Sepal.Length, y = Sepal.Width, color=Species, size = Petal.Width)
+  ) +
   geom_point(shape = 10, alpha = 0.5)
 
+graph
 "3. Crea una tabla llamada iris_mean que contenga el promedio de todas las
 variables agrupadas por Species."
 
+install.packages("dplyr")
 library(dplyr)
 
 iris_mean <- ds.clean %>% 

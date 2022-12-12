@@ -1,20 +1,10 @@
 "Reto 1. Swedish Motor Insurance
-OBJETIVO
-
-Estimar y comparar modelos de regresión lineal
-
-REQUISITOS
-
-Tener R y Rstudio instalado
-Haber cubierto los temas en el prework
-Realizar los ejemplos
-
 DESARROLLO
 
 #Reto 01: Regresión Lineal y predicción
 
 Una aseguradora de automóviles sueca está interesada en un modelo predictivo
-que le permite establecer el pago que sus clientes deben hacer por el seguro
+que le permita establecer el pago que sus clientes deben hacer por el seguro
 (Payment), explicado por el número de casos (Claims) y el número de asegurados
 (Insured).
 
@@ -56,8 +46,47 @@ Residual standard error: 71270 on 2179 degrees of freedom
 Multiple R-squared:  0.9951,	Adjusted R-squared:  0.9951 
 F-statistic: 2.211e+05 on 2 and 2179 DF,  p-value: < 2.2e-16"
 
-"Interpretación: TBA"
-#Con el primero modelo, estima uno nuevo quitando la variable Insured. No
+"Interpretación:
+El valor de R-Cuadrada múltiple nos dice que el 99.51% de la variación del Pago
+está siendo explicado por el modelo.
+Tanto el número de reclamaciones como el de asegurados provocan
+una variación positiva a la variable del pago (Payment) al incrementarse.
+A niveles de cofianza estándar, se rechazan las hipótesis nulas en favor de sus
+correspondientes alternativas: que en la población, ambas beta son sidtintas de
+cero."
+
+StanResMX <- rstandard(mx)
+
+par(mfrow = c(2,2))
+
+"Realizando gráficas de disperción"
+plot(Claims, StanResMX, ylab ="Residuales estandarizados")
+"Más o menos se aprecia una correlación nula (algo recta)"
+plot(Insured, StanResMX, ylab ="Residuales estandarizados")
+"Más o menos se aprecia una correlación positiva (hacia el final)"
+
+"Graficando Q-Q"
+qqnorm(StanResMX)
+qqline(StanResMX)
+
+"La grafica Q-Q no muestra una correlación positiva (es plana) lo que lleva a
+pensar en la poca significancia del modelo."
+
+shapiro.test(StanResMX)
+
+"Resultado:
+Shapiro-Wilk normality test
+
+data:  StanResMX
+W = 0.58255, p-value < 2.2e-16"
+
+"Interpretación: A niveles de confianza estándar, existe evidencia
+estadística para rechazar la hipótesis nula en favor de la alternativa (no
+distribuye como una normal"
+
+dev.off()
+
+#Con el primer modelo, estima uno nuevo quitando la variable Insured. No
 #olvides interpretar tus resultados y realizar el diagnóstico sobre los
 #residuos.
 
@@ -79,7 +108,43 @@ Residual standard error: 97480 on 2180 degrees of freedom
 Multiple R-squared:  0.9908,	Adjusted R-squared:  0.9908 
 F-statistic: 2.353e+05 on 1 and 2180 DF,  p-value: < 2.2e-16"
 
-"Interpretación: ... próximamante"
+"Interpretación: Descartar la variable Insured del modelo incrementó el
+coeficiente de Reclamación (por mucho). Ahora es el 99.08% de de la variación
+del Pago el que se explica en el modelo. El p-value continúa muy cercano a cero
+y en los niveles de confianza estándar aún se rechaza la hipótesis nula, en 
+favor de la anternativa: en la población beta1 es distinta de cero"
+
+StanResMX2 <- rstandard(mx2)
+
+par(mfrow = c(2,2))
+
+"Realizando gráficas de disperción"
+plot(Claims, StanResMX2, ylab ="Residuales estandarizados")
+"Más o menos se aprecia una correlación nula (algo recta)"
+plot(Insured, StanResMX2, ylab ="Residuales estandarizados")
+"Más o menos se aprecia una correlación nula (algo recta)"
+
+"Graficando Q-Q"
+qqnorm(StanResMX2)
+qqline(StanResMX2)
+
+"La grafica Q-Q sigue sin una correlación positiva (es plana) lo que lleva a
+pensar en la poca significancia del modelo."
+
+shapiro.test(StanResMX2)
+
+"Resultado:
+Shapiro-Wilk normality test
+
+data:  StanResMX2
+W = 0.45666, p-value < 2.2e-16"
+
+"Interpretación: con un p-value tan cercano a cero, a niveles de confianza
+estándar se rechaza la hipótesis nula en favor de la alternativa (la variable
+no distribuye como una normal)"
+
+dev.off()
+
 #Con el primer modelo, estima uno nuevo quitando la variable Claims. No
 #olvides interpretar tus resultados y realizar el diagnóstico sobre los
 #residuos.
@@ -102,6 +167,48 @@ Residual standard error: 365600 on 2180 degrees of freedom
 Multiple R-squared:  0.8709,	Adjusted R-squared:  0.8708 
 F-statistic: 1.471e+04 on 1 and 2180 DF,  p-value: < 2.2e-16"
 
-"Interpretación: ... de un momento a otro"
+"Interpretación: Comparado con los otros dos modelos, este presenta un menor
+valor en R-Cuadrada Múltiple, el 87.09% de la variación está explicada en el
+modelo."
+
+StanResMX3 <- rstandard(mx3)
+
+par(mfrow = c(2,2))
+
+"Realizando gráficas de disperción"
+plot(Claims, StanResMX3, ylab ="Residuales estandarizados")
+"Más o menos se aprecia una correlación positiva"
+plot(Insured, StanResMX3, ylab ="Residuales estandarizados")
+"Más o menos se aprecia una correlación positiva"
+
+"Graficando Q-Q"
+qqnorm(StanResMX3)
+qqline(StanResMX3)
+
+"La grafica Q-Q sigue sin una correlación positiva (es plana) lo que lleva a
+pensar en la poca significancia del modelo."
+
+shapiro.test(StanResMX3)
+
+"Resultado:
+Shapiro-Wilk normality test
+
+data:  StanResMX3
+W = 0.28374, p-value < 2.2e-16"
+
+"Interpretación: con un p-value tan cercano a cero, a niveles de confianza
+estándar se rechaza la hipótesis nula en favor de la alternativa (la variable
+no distribuye como una normal)"
+
+dev.off()
+
 #¿Cuál de los 3 modelos tiene un mejor poder predictivo?
+
+"Si me basara en R-Cuadrada Múltiple, diría que el primer modelo tendría mayor
+nivel predictivo.
+Por otro lado, las gráficas de los residuales estandarizados en el modelo 3
+presentan una mejoría en su correlación (más positiva).
+Los tres modelos presentan, en sus pruebas Shapiro-Wilk, un p-value cercano a 0
+lo que lleva al no-rechazo de la hipótesis de que la variable no distribuye
+como normal."
   

@@ -1,86 +1,88 @@
-library(dplyr)
-library(reshape2)
-library(ggplot2)
+# Postwork Sesión 3
 
-url1718 <- "https://www.football-data.co.uk/mmz4281/1718/SP1.csv"
-url1819 <- "https://www.football-data.co.uk/mmz4281/1819/SP1.csv"
-url1920 <- "https://www.football-data.co.uk/mmz4281/1920/SP1.csv"
+"Utilizando el dataframe `boxp.csv` realiza el siguiente análisis descriptivo.
+No olvides excluir los missing values y transformar las variables a su
+tipo y escala correspondiente."
 
-d1718 <- read.csv(file = url1718) # Importación de los datos a R
-d1819 <- read.csv(file = url1819)
-d1920 <- read.csv(file = url1920)
+df <- read.csv("https://raw.githubusercontent.com/beduExpert/Programacion-R-Santander-2022/main/Sesion-03/Data/boxp.csv")
+df <- df [complete.cases(df), ]
+head(df)
+str(df)
 
-str(d1718); str(d1819); str(d1920)
+df$Categoria <- factor(df$Categoria)
+df$Grupo <- factor(df$Grupo)
 
-head(d1718); head(d1819); head(d1920)
+summary(df)
 
-View(d1718); View(d1819); View(d1920)
+#1) Calcula e interpreta las medidas de tendencia central de la variable
+#`Mediciones`
 
-summary(d1718); summary(d1819); summary(d1920)
+mean(x=df$Mediciones)
 
-lista <- list(d1718, d1819, d1920)
+mean(x=df$Mediciones, trim = 0.25)
 
-nlista <- lapply(lista, select, Date, HomeTeam, AwayTeam, FTHG, FTAG, FTR)
+median(x=df$Mediciones) 
 
-lapply(nlista, str)
+Mode(x=df$Mediciones) 
 
-nlista[[1]] <- mutate(nlista[[1]], Date = as.Date(Date, "%d/%m/%y"))
-nlista[[2]] <- mutate(nlista[[2]], Date = as.Date(Date, "%d/%m/%Y"))
-nlista[[3]] <- mutate(nlista[[3]], Date = as.Date(Date, "%d/%m/%Y"))
+#2) Con base en tu resultado anterior, ¿qué se puede concluir respecto al sesgo
+#de `Mediciones`?
 
-lapply(nlista, str)
+"Si descartáramos los valores atípicos no parecería haber sesgo, aunque la moda
+de 23.3 (por debajo de la media) nos indica un sesgo a la derecha"
 
-data <- do.call(rbind, nlista)
+hist(df$Mediciones, main="Distribución de mediciones")
 
-dim(data)
-str(data)
-tail(data)
-View(data)
-summary(data)
+"... y lo podremos confirmar visualmente con la gráfica que nos entrega la
+funsión «hist»"
 
-(pcasa <- round(table(data$FTHG)/dim(data)[1], 3)) # Probabilidades marginales
-# estimadas para los equipos que juegan en casa
+#3) Calcula e interpreta la desviación estándar y los cuartiles de la
+#distribución de `Mediciones`
 
-(pvisita <- round(table(data$FTAG)/dim(data)[1], 3)) # Probabilidades marginales
-# estimadas para los equipos que juegan como visitante
+sd <- sd(df$Mediciones)
 
-(pcta <- round(table(data$FTHG, data$FTAG)/dim(data)[1], 3)) # Probabilidades
-# conjuntas estimadas para los partidos
+sd
+"La desviación estándar es de 53.77; que es lo que los datos se dispersan
+hacia arriba o hacia abajo, con respecto a la media"
 
-pcasa <- as.data.frame(pcasa)
+IQR(df$Mediciones)
+"Rango interquartil, la diferencia entre el 3er y 1er cuartil"
+"Es decir, la dispersión existente en el 50% central de los datos"
 
-str(pcasa)
+"Que sería lo mismo que..."
+iqr = quantile(df$Mediciones, probs = 0.75) - quantile(df$Mediciones,
+                                                       probs = 0.25)
 
-pcasa <- pcasa %>%
-  rename(goles = Var1, FRel = Freq)
+iqr
+cuartiles <- quantile(df$Mediciones, probs = c(0.25, 0.50, 0.75))
 
-tail(pcasa)
+cuartiles
 
+"4) Con ggplot, realiza un histograma separando la distribución de `Mediciones`
+por `Categoría`"
 
-p <- ggplot(pcasa, aes(x = goles, y = FRel)) + 
-  geom_bar (stat="identity", fill = 'blue') +
-  ggtitle('Equipo de casa')
+ggplot(df, aes(x=Mediciones, fill=Categoria, color=Categoria)) +
+    geom_histogram(position = "identity")
 
-p
+"¿Consideras que sólo una categoría está generando el sesgo?"
 
-pvisita <- as.data.frame(pvisita)
+"A juzgar por la clasificación mostrada en gráfica, no parece haber una
+categoría que, de manera exclusiva, contribuya al sesgo (todas parecen sesgar
+hacia la derecha)"
 
-pvisita <- rename(pvisita, goles = Var1, FRel = Freq)
-tail(pvisita)
+"5) Con ggplot, realiza un boxplot separando la distribución de `Mediciones` por
+`Categoría` y por `Grupo` dentro de cada categoría."
 
-p1 <- ggplot(pvisita, aes(x = goles, y = FRel)) + 
-  geom_bar (stat="identity", fill = 'red') +
-  ggtitle('Equipo visitante')
+ggplot(df, aes(x=Categoria, y=Mediciones, fill=Grupo)) + 
+  geom_boxplot()
 
-p1
+"¿Consideras que hay diferencias entre categorías?"
 
-pcta <- melt(pcta) # Función del paquete reshape2
+"La gráfica de boxplot muestra que los sesgos son consistentes entre categorías.
+Aunque, parece que en grupo 1 hay menor presencia de estos datos atípicos que en
+el grupo 0"
 
-pcta <- rename(pcta, gcasa = Var1, gvisita = Var2, ProbEst = value)
+"¿Los grupos al interior de cada categoría podrían estar generando el sesgo?"
 
-pcta %>%
-  ggplot(aes(gcasa, gvisita)) + 
-  geom_tile(aes(fill = ProbEst)) + 
-  ggtitle('Probabilidades conjuntas estimadas')+
-  scale_fill_gradient(low = 'white', high = 'purple') + 
-  theme(axis.text.x = element_text(angle = 90,hjust = 0))
+"Parce ser que el grupo 0 tiene mucha mayor presencia de datos que tienden al
+sesgo"
