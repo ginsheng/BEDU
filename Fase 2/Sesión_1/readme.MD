@@ -35,11 +35,11 @@ v.FTAG <- sp1$FTAG
 ?table
 ```
 
-Usando la función table, con v.FTHG y v.FTGA como argumentos..
+>Usando la función table, con v.FTHG y v.FTGA como argumentos..
 ```
 table(v.FTHG, v.FTAG)
 ```
-... se obtiene la tabla de frecuencia que cruza los goles de
+>... se obtiene la tabla de frecuencia que cruza los goles de
 visitante y local.
 
 
@@ -58,12 +58,12 @@ visitante y local.
 #### 5. Responde a las siguientes preguntas:
 #####  a) ¿Cuántos goles tuvo el partido con mayor empate?
 
-  Por simple inspección se observa que el mayor empate es 4-4 y su frecuencia fue 1
+>Por simple inspección se observa que el mayor empate es 4-4 y su frecuencia fue 1
 
 #####  b) ¿En cuántos partidos ambos equipos empataron 0 a 0?
 
-  El cruce de un empate a 0 (0x0) indica una frecuencia de 33
+>El cruce de un empate a 0 (0x0) indica una frecuencia de 33
 
 #####  c) ¿En cuántos partidos el equipo local (HG) tuvo la mayor goleada sin dejar que el equipo visitante (AG) metiera un solo gol?
 
-  En uno, en que metió 6 goles sin recibir ni uno.
+>En uno, en que metió 6 goles sin recibir ni uno.
